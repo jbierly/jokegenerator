@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Google Image Search</title>
+
+<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+<style>
+#searchResult{
+	padding:10%;
+}
+#searchResult img{
+	max-width:100%;
+}
+</style>
+</head>
+
+<body>
+	
+	<form id="testForm">
+		<input type="text" name="query" />
+		<button type="submit">Search</button>
+	</form>
+	
+	<div id="searchResult"></div>
+</body>
+
+<script type="text/javascript">
+
+	$(function() {
+	
+		$('#testForm').on('submit', searchGoogleImages);
+	
+	
+		function searchGoogleImages(e){
+			e.preventDefault();
+		
+			var query = $(e.currentTarget).find('input').val(),
+				requestParams = {
+				'cx'			: '007308418438680453078:-on4heh66ga',
+				'key'			: 'AIzaSyAfEkrPdxrjo1ZZWljJjduS-8mqFK_6saw',
+				'searchType' 	: 'image',
+				'safe'			: 'high',
+				'num'			: 1,
+				'q'				: query
+			};
+
+			$.ajax({
+				url	:"https://www.googleapis.com/customsearch/v1",
+				data: requestParams,
+				success: function(response){
+					console.log(response);
+			
+					var firstImage = response.items.shift();
+					$("#searchResult").empty().append("<img src="+firstImage.link+" />");
+				}
+			})
+	
+		}
+	
+	});
+
+</script>
+	
+	<!-- ?cx=007308418438680453078:-on4heh66ga&q=bear&safe=high&num=1&searchType=image&key=AIzaSyAfEkrPdxrjo1ZZWljJjduS-8mqFK_6saw -->
+	
+</html>
